@@ -10,7 +10,7 @@ import (
 	"time"
 
 	"github.com/mdaffin/go-telegraf"
-	"github.com/thannaske/go-ts3"
+	ts3 "github.com/thannaske/go-ts3"
 )
 
 func main() {
@@ -33,20 +33,20 @@ func main() {
 	defer tsClient.Close()
 
 	if err := tsClient.Login(*usernamePtr, *passwordPtr); err != nil {
-		logConsole("[Error] Authentication failure")
+		logConsole("[Error] Authentication failure:", err)
 		os.Exit(1)
 	}
 
 	for range time.Tick(time.Second * 10) {
-		if serverList, err := tsClient.Server.ExtendedList(); err != nil {
-			logConsole("[Error] Could not iterate through Teamspeak 3 server instances")
+		if serverList, err := ListServers(tsClient); err != nil {
+			logConsole("[Error] Could not iterate through Teamspeak 3 server instances:", err)
 			os.Exit(1)
 		} else {
 			for _, server := range serverList {
 				measurement := createMeasurement(server)
 				err = telegrafClient.Write(measurement)
 				if err != nil {
-					logConsole("[Error] Writing measurement failed", err)
+					logConsole("[Error] Writing measurement failed:", err)
 					os.Exit(1)
 				}
 			}
@@ -124,4 +124,42 @@ func createMeasurement(server *ts3.Server) telegraf.Measurement {
 	measurement.AddFloat32("avg_ping", server.TotalPing)
 
 	return measurement
+}
+
+// ListServers iterates through virtual servers and lists extended information about each of them.
+func ListServers(client *ts3.Client, options ...string) ([]*ts3.Server, error) {
+	var servers []*ts3.Server
+	var outputServers []*ts3.Server
+	var err error = nil
+
+	if _, err := client.Server.ExecCmd(ts3.NewCmd("serverlist").WithOptions(options...).WithResponse(&servers)); err != nil {
+		return nil, err
+	}
+
+	info, err := client.Server.Whoami()
+	if err != nil {
+		return nil, err
+	}
+
+	defer func(err *error) {
+		if err2 := client.Server.UsePort(info.SelectedServerPort); err2 != nil {
+			*err = err2
+		}
+	}(&err)
+
+	for _, server := range servers {
+		if server.Status == "online" {
+			if err := client.Server.Use(server.ID); err != nil {
+				return nil, err
+			}
+			if _, err := client.Server.ExecCmd(ts3.NewCmd("serverinfo").WithResponse(&outputServers)); err != nil {
+				return nil, err
+			}
+		} else {
+			outputServers = append(outputServers, server)
+		}
+
+	}
+
+	return outputServers, err
 }
