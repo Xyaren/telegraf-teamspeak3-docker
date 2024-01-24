@@ -1,4 +1,4 @@
-module main
+module github.com/xyaren/telegraf-teamspeak3-docker
 
 go 1.21
 
@@ -10,5 +10,4 @@ require (
 require (
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/stretchr/testify v1.8.1 // indirect
-
 )

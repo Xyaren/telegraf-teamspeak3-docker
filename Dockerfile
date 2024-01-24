@@ -1,11 +1,10 @@
 FROM golang:1.21-alpine as builder
-RUN mkdir /build
+
 WORKDIR /build
-COPY ./src /build
-ENV CGO_ENABLED=0
-ENV GOOS=linux
-RUN go install
-RUN go build -a -installsuffix cgo -ldflags '-extldflags "-static"' -o main teamspeak.go
+
+ADD ./go.mod ./go.sum ./
+ADD ./teamspeak.go .
+RUN CGO_ENABLED=0 go build -a -installsuffix cgo -ldflags '-extldflags "-static"' -o main teamspeak.go
 RUN chmod +x /build/main
 
 FROM scratch

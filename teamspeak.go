@@ -10,7 +10,7 @@ import (
 	"time"
 
 	"github.com/mdaffin/go-telegraf"
-	ts3 "github.com/thannaske/go-ts3"
+	"github.com/thannaske/go-ts3"
 )
 
 func main() {

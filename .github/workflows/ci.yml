@@ -14,9 +14,6 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./src
     steps:
     - uses: actions/checkout@v4
     - uses: WillAbides/setup-go-faster@v1.14.0
@@ -32,9 +29,6 @@ jobs:
     strategy:
       fail-fast: false
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./src
     steps:
     - uses: actions/checkout@v4
     - uses: WillAbides/setup-go-faster@v1.14.0

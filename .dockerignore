@@ -1,3 +1,5 @@
 .idea
 .git
 README.md
+.gitignore
+.github
