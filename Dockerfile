@@ -8,6 +8,6 @@ RUN go install
 RUN go build -a -installsuffix cgo -ldflags '-extldflags "-static"' -o main teamspeak.go
 RUN chmod +x /build/main
 
-FROM telegraf:alpine
-ADD ./telegraf.conf /etc/telegraf/telegraf.conf
+FROM scratch
 COPY --from=builder /build/main /app/
+ENTRYPOINT ["/app/main"]
