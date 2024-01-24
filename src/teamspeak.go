@@ -55,7 +55,7 @@ func main() {
 }
 
 func logConsole(a ...any) {
-	_, _ = fmt.Fprintln(os.Stderr, a)
+	_, _ = fmt.Fprintln(os.Stderr, a...)
 }
 
 func createClient(url *string) telegraf.Client {
