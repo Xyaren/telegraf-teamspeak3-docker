@@ -1,6 +1,6 @@
 module main
 
-go 1.20
+go 1.21
 
 require (
 	github.com/mdaffin/go-telegraf v0.0.0-20170913212510-e4f1649ff575
