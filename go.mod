@@ -1,6 +1,6 @@
 module github.com/xyaren/telegraf-teamspeak3-docker
 
-go 1.22
+go 1.24
 
 require (
 	github.com/mdaffin/go-telegraf v0.0.0-20170913212510-e4f1649ff575
