@@ -4,6 +4,10 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    groups:
+      docker:
+        patterns:
+          - "docker/*"
   - package-ecosystem: "gomod"
     directory: "/"
     schedule:
@@ -12,4 +16,3 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-      
