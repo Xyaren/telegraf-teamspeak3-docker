@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v6
-    - uses: WillAbides/setup-go-faster@v1.14.0
+    - uses: WillAbides/setup-go-faster@v1.19.0
       with:
         go-version-file: go.mod
     - name: Get dependencies
@@ -31,7 +31,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v6
-    - uses: WillAbides/setup-go-faster@v1.14.0
+    - uses: WillAbides/setup-go-faster@v1.19.0
       with:
         go-version-file: go.mod
     - run: "go vet ./..."
